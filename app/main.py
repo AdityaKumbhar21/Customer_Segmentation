@@ -72,14 +72,14 @@ CLUSTER_INTERPRETATIONS = {
 
 
 def calculate_rfm(df: pd.DataFrame) -> pd.DataFrame:
-    required_cols = ['Invoice','StockCode','Description','Quantity','InvoiceDate','UnitPrice','Customer ID','Country']
+    required_cols = ['Invoice','StockCode','Description','Quantity','InvoiceDate','Price','Customer ID','Country']
     if not all(col in df.columns for col in required_cols):
         raise ValueError(f"Input CSV must contain all required columns: {required_cols}")
     
     df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
     df['Invoice'] = df['Invoice'].astype("str")
     df = df[df['Invoice'].str.match("^\\d{6}$") == True]
-    df['TotalSales'] = df['Quantity'] * df['UnitPrice']
+    df['TotalSales'] = df['Quantity'] * df['Price']
     max_invoice_date = df['InvoiceDate'].max()
     aggregated_df = df.groupby(by='Customer ID', as_index=False).agg(
         MonetaryValue=('TotalSales', 'sum'),
@@ -102,14 +102,11 @@ async def classify_customers(file: UploadFile = File(...)):
         contents = await file.read()
         df = pd.read_csv(io.StringIO(contents.decode('utf-8')))
 
+
         rfm_features, customer_ids = calculate_rfm(df)
-        print(df.head())
-
-        print(rfm_features.head())
-        print(type(rfm_features))
-        scaled_rfm_features = scaler.transform(rfm_features)
+        scaled_rfm_array = scaler.transform(rfm_features)
+        scaled_rfm_features = pd.DataFrame(scaled_rfm_array, columns=rfm_features.columns)
         cluster_labels = model.predict(scaled_rfm_features)
-
 
         results = []
         for i, customer_id in enumerate(customer_ids):
