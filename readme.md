@@ -157,23 +157,28 @@ Four distinct customer segments were identified, each with unique characteristic
 
   * Engage them in product development or service improvement discussions for invaluable insights.
 
-## 5. Future Work
+## End-to-End Application Development
+An end-to-end application has been developed to enable practical utilization of the customer segmentation model.
 
-The project will proceed with the following phases:
+### **Backend: FastAPI**
+The backend for this project is built using FastAPI, a modern, fast (high-performance) web framework for building APIs with Python 3.7+ based on standard Python type hints.
 
-* **Backend Development (FastAPI):** Develop a robust API using FastAPI to host the trained K-Means model. This API will classify new customer data (MonetaryValue, Frequency, Recency) into one of the four identified clusters.
+- **Endpoint**: The core functionality is exposed via the /classify_customers POST endpoint.
+Input: This endpoint expects a CSV file as input.
+Processing: Upon receiving a CSV file, the backend performs the following steps:
+Data Preprocessing: It applies the same data cleaning rules as used during the model training phase (e.g., filtering out cancellation invoices, negative quantities/prices, and rows with missing Customer IDs).
 
-* **Frontend Development:** Create a user-friendly web application that allows users to input customer parameters and visualize the assigned cluster, providing a practical tool for sales and marketing teams.
+- **Feature Engineering (RFM)**: It calculates the Recency, Frequency, and MonetaryValue features for each customer by aggregating the processed data based on Customer ID.
 
-## 6. How to Run the Project
+- **Feature Scaling**: The engineered RFM features are then scaled using the pre-trained StandardScaler to ensure consistency with the model's training data.
 
-*(This section will be populated once the backend and frontend development are complete.)*
+- **Customer Classification**: The scaled RFM features are fed into the pre-trained K-Means model, which predicts the cluster label for each customer.
 
-## 7. Dependencies
+- **Output**: The API returns a JSON response containing a list of dictionaries. Each dictionary represents a customer and includes their customer_id, predicted_cluster_id, the cluster_name, cluster_interpretation, cluster_recommendations, and their calculated rfm_values.
 
-*(This section will list all required Python libraries and their versions once the project is finalized.)*
+### Frontend: React and Tailwind CSS
+A user-friendly frontend application has been developed using React for dynamic UI components and Tailwind CSS for rapid and responsive styling.
 
-## 8. Author
-
-*(Your Name/Team Name)*
-*(Optional: Contact Information, GitHub Profile, LinkedIn Profile)*
+- **File Upload**: The frontend provides an intuitive interface for users to upload their CSV files.
+- **Tabular Results with Sorting**: Upon successful processing by the backend, the customer segmentation results are displayed in a clear and organized tabular format. This table presents all the necessary RFM features alongside the predicted cluster information for each customer. Users can interactively sort the displayed data by Cluster ID, Customer ID, and all RFM features (Recency, Frequency, MonetaryValue) in both ascending and descending order, providing enhanced flexibility for analysis.
+- **CSV Download**: For convenience and further analysis, the frontend allows users to download the displayed results as a new CSV file.
