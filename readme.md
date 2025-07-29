@@ -182,3 +182,7 @@ A user-friendly frontend application has been developed using React for dynamic 
 - **File Upload**: The frontend provides an intuitive interface for users to upload their CSV files.
 - **Tabular Results with Sorting**: Upon successful processing by the backend, the customer segmentation results are displayed in a clear and organized tabular format. This table presents all the necessary RFM features alongside the predicted cluster information for each customer. Users can interactively sort the displayed data by Cluster ID, Customer ID, and all RFM features (Recency, Frequency, MonetaryValue) in both ascending and descending order, providing enhanced flexibility for analysis.
 - **CSV Download**: For convenience and further analysis, the frontend allows users to download the displayed results as a new CSV file.
+
+- Live app link: [Link](https://customer-segmentation-ui-coral.vercel.app/)
+- Blog app: [Link](https://medium.com/@adityakumbhar915/customer-segmentation-project-online-retail-store-5a8c779da315)
+- Demo Link: [Link](https://drive.google.com/file/d/1GiD6PxSDVwr5BYGls5IzfTaLSrZ61-OI/view?usp=sharing)
