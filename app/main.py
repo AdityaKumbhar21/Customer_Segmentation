@@ -2,11 +2,9 @@ from fastapi import FastAPI, UploadFile, HTTPException, File
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
-import numpy as np
 import joblib
 import io
-import os
-from datetime import datetime, timedelta
+
 
 
 app = FastAPI()
@@ -129,7 +127,7 @@ async def classify_customers(file: UploadFile = File(...)):
                 }
             })
 
-            return JSONResponse(content=results)
+        return JSONResponse(content=results)
 
 
     except ValueError as ve:
